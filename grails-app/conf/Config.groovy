@@ -2,7 +2,9 @@ profsDE = 20
 profsT20 = 20
 profsT40 = 20
 chCertific = 100
-numAlunosCertific = 100
+anoAtual = 2011
+periodoAtual = 2
+
 // locations to search for config files that get merged into the main config
 // config files can either be Java properties files or ConfigSlurper scripts
 

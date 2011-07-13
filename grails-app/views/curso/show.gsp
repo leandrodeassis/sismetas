@@ -44,13 +44,6 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="curso.numeroDeAlunosMatriculados.label" default="Numero De Alunos Matriculados" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: cursoInstance, field: "numeroDeAlunosMatriculados")}</td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="curso.turmas.label" default="Turmas" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">

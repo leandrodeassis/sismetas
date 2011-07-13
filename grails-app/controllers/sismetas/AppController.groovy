@@ -18,7 +18,7 @@ class AppController {
 			redirect(controller: 'app', action:'index')
 			return
 		}
-	[profsDE: CH.config.profsDE, profsT20: CH.config.profsT20, profsT40: CH.config.profsT40, numAlunosCertific: CH.config.numAlunosCertific, chCertific: CH.config.chCertific]
+	[profsDE: CH.config.profsDE, profsT20: CH.config.profsT20, profsT40: CH.config.profsT40, anoAtual: CH.config.anoAtual, periodoAtual: CH.config.periodoAtual, chCertific: CH.config.chCertific]
 	}
 	
 	def authenticate = {
@@ -79,12 +79,14 @@ class AppController {
 			params.profsT20 = new Integer(params.profsT20);
 			params.profsT40 = new Integer(params.profsT40);
 			params.chCertific = new Integer(params.chCertific);
-			params.numAlunosCertific = new Integer(params.numAlunosCertific);
+			params.anoAtual = new Integer(params.anoAtual);
+			params.periodoAtual = new Integer(params.periodoAtual)
 			CH.config.profsDE = params.profsDE
 			CH.config.profsT20 = params.profsT20
 			CH.config.profsT40 = params.profsT40
 			CH.config.chCertific = params.chCertific
-			CH.config.numAlunosCertific = params.numAlunosCertific
+			CH.config.anoAtual = params.anoAtual
+			CH.config.periodoAtual = params.periodoAtual
 			flash.message = "Valores modificados com sucesso."			
 			redirect(controller:"app", action:"prof")
 		}
@@ -96,32 +98,73 @@ class AppController {
 
 	def relatorio = {
 		//Indice de eficiencia da instituicao
-		def turmas = [:]
-		def indiceEficienciaTotal = 0
-		def indiceEficaciaTotal = 0
-		def total = 0
-		for(turma in Turma.list()) {			
-			total = (turma.semestre.size()) ? (turma.semestre.quantidadeDeAlunos.sum()/(turma.semestre.size()*turma.quantidadeDeAlunos))*100 : 0
-			indiceEficienciaTotal += total
-			turmas.put(turma,new BigDecimal(total, new java.math.MathContext(4)))			
-		}
-		indiceEficienciaTotal = (Turma.list()) ? new BigDecimal(indiceEficienciaTotal/Turma.list().size(), new java.math.MathContext(4)) : 0
+		def turmasMapMeta1 = [:]
+		for(turma in Turma.list()) {
+			for (sem in turma.semestre) {
+				if (turmasMapMeta1.get("${sem.ano}.${sem.periodo}")) {
+					turmasMapMeta1.put("${sem.ano}.${sem.periodo}", (turmasMapMeta1.get("${sem.ano}.${sem.periodo}")+(sem.quantidadeDeAlunos/turma.vagasEdital)))				
+				}else{
+					turmasMapMeta1.put("${sem.ano}.${sem.periodo}",[sem.quantidadeDeAlunos/turma.vagasEdital])
+				}
+			}					
+		}		
+		if (turmasMapMeta1) {
+			for(m in turmasMapMeta1) {
+				turmasMapMeta1.put(m.key, new BigDecimal((m.value.sum()/m.value.size())*100, new java.math.MathContext(4)))
+			}
+			turmasMapMeta1 = turmasMapMeta1.sort({a,b -> a.key <=> b.key})
+			turmasMapMeta1.put("MÉDIA", turmasMapMeta1.collect{ key, value -> value}.sum()/turmasMapMeta1.size())
+		}else{turmasMapMeta1.put("Não há cadastros", "")}
 		
 		//Indice de eficacia da instituicao
-		def eficacia = [:]
-		for (turma in Turma.list()) {
-			def eficaciaTurma = (turma.numeroDeConcluintes/turma.quantidadeDeAlunos)*100
-			indiceEficaciaTotal += eficaciaTurma
-			eficacia.put(turma, [turma.quantidadeDeAlunos, turma.numeroDeConcluintes, new BigDecimal(eficaciaTurma, new java.math.MathContext(4))])		
+		def turmasMapMeta2 = [:]
+		for(turma in Turma.list()) {
+			for(sem in turma.semestre) {
+				if (sem.semestreDeConcluintes) {
+					if (turmasMapMeta2.get("${sem.ano}.${sem.periodo}")) {
+						turmasMapMeta2.put("${sem.ano}.${sem.periodo}", (turmasMapMeta2.get("${sem.ano}.${sem.periodo}")+(sem.quantidadeDeAlunos/turma.vagasEdital)))				
+					}else{
+						turmasMapMeta2.put("${sem.ano}.${sem.periodo}",[sem.quantidadeDeAlunos/turma.vagasEdital])			
+					}
+				}
+			}
 		}
-		indiceEficaciaTotal = (Turma.list()) ? indiceEficaciaTotal/Turma.list().size() : 0
+		if (turmasMapMeta2) {
+			for(m in turmasMapMeta2) {
+				turmasMapMeta2.put(m.key, new BigDecimal((m.value.sum()/m.value.size())*100, new java.math.MathContext(4)))
+			}
+			turmasMapMeta2 = turmasMapMeta2.sort({a,b -> a.key <=> b.key})
+			turmasMapMeta2.put("MÉDIA", turmasMapMeta2.collect{ key, value -> value}.sum()/turmasMapMeta2.size())
+		}else{turmasMapMeta2.put("Não há cadastros", "")}
 		
+		//Alunos matriculados em relacao a forca de trabalho
+		def totalAlunos = Semestre.findAllByAnoAndPeriodo(CH.config.anoAtual, CH.config.periodoAtual)
+		totalAlunos = totalAlunos.quantidadeDeAlunos.sum()
+		def cursosCertific = Curso.findAllByTipoDeCurso("Certific")
+		def totalAlunosCertific = 0
+		for(curso in cursosCertific) {
+			for(turma in curso.turmas) {
+				for(sem in turma.semestre) {
+					println sem.ano
+					println sem.periodo
+					println CH.config.anoAtual
+					if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
+						totalAlunosCertific += sem.quantidadeDeAlunos
+					}
+				}
+			}	 
+		}
+		def forcaDeTrabalho = ((totalAlunos-totalAlunosCertific) + ((totalAlunosCertific*CH.config.chCertific)/400)/((CH.config.profsDE+CH.config.profsT40)+(CH.config.profsT20*0.5)))
+		def turmasListMeta3 = [totalAlunos, totalAlunosCertific, CH.config.chCertific, CH.config.profsDE, CH.config.profsT20, CH.config.profsT40,forcaDeTrabalho]
+		
+		/*
 		//Alunos matriculados em relacao a forca de trabalho
 		def curso = Curso.list()
 		def totalAlunosMatriculados = (curso) ? curso.numeroDeAlunosMatriculados.sum() : 0
 		def certific = [CH.config.numAlunosCertific, CH.config.chCertific]
 		def profs = [CH.config.profsDE, CH.config.profsT20, CH.config.profsT40]
 		def totalFT = (totalAlunosMatriculados + ((certific[0]*certific[1])/400))/((profs[0]+profs[1])+(profs[2]*0.5))
+		
 		
 		//Vagas para os cursos técnicos
 		def alunosMatriculadosEmTodosOsCursos = Curso.list()
@@ -139,6 +182,8 @@ class AppController {
 		def totalVL = [alunosMatriculadosEmTodosOsCursos, alunosMatriculadosEmLicenciatura, porcVL]
 		
 		//Retorno ao relatorio.gsp
-		[totalVL: totalVL, totalVCT:totalVCT, indiceEficaciaTotal:indiceEficaciaTotal, eficacia:eficacia, indiceEficienciaTotal:indiceEficienciaTotal, turmas:turmas, curso:curso, totalAlunosMatriculados:totalAlunosMatriculados, certific:certific, profs:profs, totalFT:totalFT]
+		//[totalVL: totalVL, totalVCT:totalVCT, indiceEficaciaTotal:indiceEficaciaTotal, eficacia:eficacia, indiceEficienciaTotal:indiceEficienciaTotal, turmas:turmas, curso:curso, totalAlunosMatriculados:totalAlunosMatriculados, certific:certific, profs:profs, totalFT:totalFT]
+		*/
+		[turmasMapMeta1:turmasMapMeta1, turmasMapMeta2:turmasMapMeta2, turmasListMeta3:turmasListMeta3]
 	}
 }

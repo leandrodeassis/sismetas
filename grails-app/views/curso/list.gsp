@@ -28,8 +28,6 @@
                         
                             <g:sortableColumn property="tipoDeCurso" title="${message(code: 'curso.tipoDeCurso.label', default: 'Tipo De Curso')}" />
                         
-                            <g:sortableColumn property="numeroDeAlunosMatriculados" title="${message(code: 'curso.numeroDeAlunosMatriculados.label', default: 'Numero De Alunos Matriculados')}" />
-                        
                         </tr>
                     </thead>
                     <tbody>
@@ -41,8 +39,6 @@
                             <td>${fieldValue(bean: cursoInstance, field: "nome")}</td>
                         
                             <td>${fieldValue(bean: cursoInstance, field: "tipoDeCurso")}</td>
-                        
-                            <td>${fieldValue(bean: cursoInstance, field: "numeroDeAlunosMatriculados")}</td>
                         
                         </tr>
                     </g:each>

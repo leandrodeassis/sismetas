@@ -30,6 +30,8 @@
                         
                             <g:sortableColumn property="quantidadeDeAlunos" title="${message(code: 'semestre.quantidadeDeAlunos.label', default: 'Quantidade De Alunos')}" />
                         
+                            <g:sortableColumn property="semestreDeConcluintes" title="${message(code: 'semestre.semestreDeConcluintes.label', default: 'Semestre De Concluintes')}" />
+                        
                             <th><g:message code="semestre.turma.label" default="Turma" /></th>
                         
                         </tr>
@@ -45,6 +47,8 @@
                             <td>${fieldValue(bean: semestreInstance, field: "periodo")}</td>
                         
                             <td>${fieldValue(bean: semestreInstance, field: "quantidadeDeAlunos")}</td>
+                        
+                            <td><g:formatBoolean boolean="${semestreInstance.semestreDeConcluintes}" /></td>
                         
                             <td>${fieldValue(bean: semestreInstance, field: "turma")}</td>
                         

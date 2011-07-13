@@ -3,11 +3,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="layout" content="main" />
-    <title>Configurações de Professores/CERTIFIC</title>         
+    <title>Configurações</title>         
   </head>
   <body>
 	<div id="pageBody">
-      <h1>Configurações de Professores/CERTIFIC</h1>
+      <h1>Configurações</h1>
       <g:if test="${flash.message}">
         <div class="message">${flash.message}</div>
       </g:if>
@@ -50,16 +50,25 @@
                   <input type="text" id="chCertific" name="chCertific" value="${chCertific}" />
                 </td>
               </tr>
+
+               <tr class="prop">
+                <td class="name">
+                  <label for="anoAtual">Ano Atual:</label>
+                </td>
+                <td>
+                  <input type="text" id="AnoAtual" name="anoAtual" value="${anoAtual}" />
+                </td>
+              </tr>
 			  
                <tr class="prop">
                 <td class="name">
-                  <label for="numAlunosCertific">Número de Alunos CERTIFIC:</label>
+                  <label for="periodoAtual">Período Atual (1/2):</label>
                 </td>
                 <td>
-                  <input type="text" id="numAlunosCertific" name="numAlunosCertific" value="${numAlunosCertific}" />
+                  <input type="text" id="periodoAtual" name="periodoAtual" value="${periodoAtual}" />
                 </td>
-              </tr> 
-
+              </tr>
+			  
             </tbody>
           </table>
         </div>

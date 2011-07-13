@@ -60,6 +60,15 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                  <label for="semestreDeConcluintes"><g:message code="semestre.semestreDeConcluintes.label" default="Semestre De Concluintes" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: semestreInstance, field: 'semestreDeConcluintes', 'errors')}">
+                                    <g:checkBox name="semestreDeConcluintes" value="${semestreInstance?.semestreDeConcluintes}" />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                   <label for="turma"><g:message code="semestre.turma.label" default="Turma" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: semestreInstance, field: 'turma', 'errors')}">

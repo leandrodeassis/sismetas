@@ -51,10 +51,10 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="numeroDeConcluintes"><g:message code="turma.numeroDeConcluintes.label" default="Numero De Concluintes" /></label>
+                                  <label for="vagasEdital"><g:message code="turma.vagasEdital.label" default="Vagas Edital" /></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'numeroDeConcluintes', 'errors')}">
-                                    <g:textField name="numeroDeConcluintes" value="${fieldValue(bean: turmaInstance, field: 'numeroDeConcluintes')}" />
+                                <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'vagasEdital', 'errors')}">
+                                    <g:textField name="vagasEdital" value="${fieldValue(bean: turmaInstance, field: 'vagasEdital')}" />
                                 </td>
                             </tr>
                         
@@ -64,15 +64,6 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'curso', 'errors')}">
                                     <g:select name="curso.id" from="${sismetas.Curso.list()}" optionKey="id" value="${turmaInstance?.curso?.id}"  />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="quantidadeDeAlunos"><g:message code="turma.quantidadeDeAlunos.label" default="Quantidade De Alunos" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'quantidadeDeAlunos', 'errors')}">
-                                    <g:textField name="quantidadeDeAlunos" value="${fieldValue(bean: turmaInstance, field: 'quantidadeDeAlunos')}" />
                                 </td>
                             </tr>
                         

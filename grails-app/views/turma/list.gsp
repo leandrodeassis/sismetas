@@ -28,11 +28,9 @@
                         
                             <g:sortableColumn property="periodo" title="${message(code: 'turma.periodo.label', default: 'Periodo')}" />
                         
-                            <g:sortableColumn property="numeroDeConcluintes" title="${message(code: 'turma.numeroDeConcluintes.label', default: 'Numero De Concluintes')}" />
+                            <g:sortableColumn property="vagasEdital" title="${message(code: 'turma.vagasEdital.label', default: 'Vagas Edital')}" />
                         
                             <th><g:message code="turma.curso.label" default="Curso" /></th>
-                        
-                            <g:sortableColumn property="quantidadeDeAlunos" title="${message(code: 'turma.quantidadeDeAlunos.label', default: 'Quantidade De Alunos')}" />
                         
                         </tr>
                     </thead>
@@ -46,11 +44,9 @@
                         
                             <td>${fieldValue(bean: turmaInstance, field: "periodo")}</td>
                         
-                            <td>${fieldValue(bean: turmaInstance, field: "numeroDeConcluintes")}</td>
+                            <td>${fieldValue(bean: turmaInstance, field: "vagasEdital")}</td>
                         
                             <td>${fieldValue(bean: turmaInstance, field: "curso")}</td>
-                        
-                            <td>${fieldValue(bean: turmaInstance, field: "quantidadeDeAlunos")}</td>
                         
                         </tr>
                     </g:each>

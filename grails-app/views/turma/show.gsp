@@ -44,9 +44,9 @@
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name"><g:message code="turma.numeroDeConcluintes.label" default="Numero De Concluintes" /></td>
+                            <td valign="top" class="name"><g:message code="turma.vagasEdital.label" default="Vagas Edital" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "numeroDeConcluintes")}</td>
+                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "vagasEdital")}</td>
                             
                         </tr>
                     
@@ -54,13 +54,6 @@
                             <td valign="top" class="name"><g:message code="turma.curso.label" default="Curso" /></td>
                             
                             <td valign="top" class="value"><g:link controller="curso" action="show" id="${turmaInstance?.curso?.id}">${turmaInstance?.curso?.encodeAsHTML()}</g:link></td>
-                            
-                        </tr>
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="turma.quantidadeDeAlunos.label" default="Quantidade De Alunos" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "quantidadeDeAlunos")}</td>
                             
                         </tr>
                     

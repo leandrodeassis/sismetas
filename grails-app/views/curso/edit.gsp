@@ -51,15 +51,6 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="numeroDeAlunosMatriculados"><g:message code="curso.numeroDeAlunosMatriculados.label" default="Numero De Alunos Matriculados" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: cursoInstance, field: 'numeroDeAlunosMatriculados', 'errors')}">
-                                    <g:textField name="numeroDeAlunosMatriculados" value="${fieldValue(bean: cursoInstance, field: 'numeroDeAlunosMatriculados')}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
                                   <label for="turmas"><g:message code="curso.turmas.label" default="Turmas" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: cursoInstance, field: 'turmas', 'errors')}">

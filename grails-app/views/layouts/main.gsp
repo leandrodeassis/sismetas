@@ -20,7 +20,7 @@
 					<span class="menuButton"><g:link controller="curso" class="list" action="list" style="font-size:12px"><g:message code="Cursos" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="turma" class="list" action="list" style="font-size:12px"><g:message code="Turmas" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="semestre" class="list" action="list" style="font-size:12px"><g:message code="Semestres" args="[entityName]" /></g:link></span>					
-					<span class="menuButton"><g:link controller="app" class="prof" action="prof" style="font-size:12px"><g:message code="Professores" args="[entityName]" /></g:link></span>					
+					<span class="menuButton"><g:link controller="app" class="prof" action="prof" style="font-size:12px"><g:message code="Configurações" args="[entityName]" /></g:link></span>					
 					<span class="menuButton"><g:link controller="app" class="relatorio" action="relatorio" style="font-size:12px"><g:message code="Relatório" args="[entityName]" /></g:link></span>					
 					<span class="menuButton"><g:link controller="app" class="key" action="trocarsenha" style="font-size:12px"><g:message code="Mudar Senha" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="app" class="logout" action="logout" style="font-size:12px"><g:message code="Sair" args="[entityName]" /></g:link></span>

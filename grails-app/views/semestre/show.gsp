@@ -51,6 +51,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="semestre.semestreDeConcluintes.label" default="Semestre De Concluintes" /></td>
+                            
+                            <td valign="top" class="value"><g:formatBoolean boolean="${semestreInstance?.semestreDeConcluintes}" /></td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="semestre.turma.label" default="Turma" /></td>
                             
                             <td valign="top" class="value"><g:link controller="turma" action="show" id="${semestreInstance?.turma?.id}">${semestreInstance?.turma?.encodeAsHTML()}</g:link></td>
