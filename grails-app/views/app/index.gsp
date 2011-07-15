@@ -1,5 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
-
 <html>
     <head>
 		<meta http-equiv="Content-Type" content="text/html"; charset=UTF-8" />
@@ -11,6 +9,7 @@
 		<div class="message">${flash.message}</div>
 	</g:if>
 	<g:if test="${session.user}">
+		<br>
 		<center>Utilize o menu acima para navegar no sistema</center>
 	</g:if>
 	<g:else>
