@@ -97,6 +97,12 @@ class AppController {
 	}
 
 	def relatorio = {
+		if (!session.user) {
+			flash.message = "Permissão Negada"
+			redirect(controller: 'app', action:'index')
+			return
+		}
+		
 		//Indice de eficiencia da instituicao
 		def turmasMapMeta1 = [:]
 		for(turma in Turma.list()) {
@@ -113,17 +119,12 @@ class AppController {
 				turmasMapMeta1.put(m.key, new BigDecimal((m.value.sum()/m.value.size())*100, new java.math.MathContext(4)))
 			}
 			turmasMapMeta1 = turmasMapMeta1.sort({a,b -> a.key <=> b.key})
-			//turmasMapMeta1.put("MÉDIA", turmasMapMeta1.collect{ key, value -> value}.sum()/turmasMapMeta1.size())
 		}
-		def numPontosQueVaiTer = 4+turmasMapMeta1.size()
-		println numPontosQueVaiTer
+		def numPontosQueVaiTer1 = 8+turmasMapMeta1.size()
 		for(b in turmasMapMeta1) {
-			if (b.key.toString() in ["2013.1","2013.2","2016.1","2016.2"]) {numPontosQueVaiTer -= 1}
+			if (b.key.toString() in ["2013.1","2013.2","2014.1","2014.2","2015.1","2015.2","2016.1","2016.2"]) {numPontosQueVaiTer1 -= 1}
 		}
-		println numPontosQueVaiTer
-	
 				
-		
 		//Indice de eficacia da instituicao
 		def turmasMapMeta2 = [:]
 		for(turma in Turma.list()) {
@@ -142,13 +143,16 @@ class AppController {
 				turmasMapMeta2.put(m.key, new BigDecimal((m.value.sum()/m.value.size())*100, new java.math.MathContext(4)))
 			}
 			turmasMapMeta2 = turmasMapMeta2.sort({a,b -> a.key <=> b.key})
-			turmasMapMeta2.put("MÉDIA", turmasMapMeta2.collect{ key, value -> value}.sum()/turmasMapMeta2.size())
-		}else{turmasMapMeta2.put("Não há cadastros", "")}
+		}
+		def numPontosQueVaiTer2 = 8+turmasMapMeta2.size()
+		for(b in turmasMapMeta2) {
+			if (b.key.toString() in ["2013.1","2013.2","2014.1","2014.2","2015.1","2015.2","2016.1","2016.2"]) {numPontosQueVaiTer2 -= 1}
+		}
 		
 		//Alunos matriculados em relacao a forca de trabalho
 		def totalAlunos = Semestre.findAllByAnoAndPeriodo(CH.config.anoAtual, CH.config.periodoAtual)
 		totalAlunos = (totalAlunos) ? totalAlunos.quantidadeDeAlunos.sum() : 0
-		def cursosCertific = (Curso.findAllByTipoDeCurso("Certific").turmas.semestre) ? Curso.findAllByTipoDeCurso("Certific").turmas.semestre[0][0] : null
+		def cursosCertific = (Curso.findAllByTipoDeCursoLike("%Certific%").turmas.semestre) ? Curso.findAllByTipoDeCursoLike("%Certific%").turmas.semestre[0][0] : null
 		def totalAlunosCertific = 0
 		for(sem in cursosCertific) {
 			if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
@@ -157,29 +161,35 @@ class AppController {
 		}
 		def forcaDeTrabalho = ((totalAlunos-totalAlunosCertific) + ((totalAlunosCertific*CH.config.chCertific)/400)/((CH.config.profsDE+CH.config.profsT40)+(CH.config.profsT20*0.5)))
 		def turmasListMeta3 = [totalAlunos, totalAlunosCertific, CH.config.chCertific, CH.config.profsDE, CH.config.profsT40, CH.config.profsT20,forcaDeTrabalho]
-		
+				
 		//Vagas para os cursos técnicos
-		def alunosTecnico = (Curso.findAllByTipoDeCurso("Técnico").turmas.semestre) ? Curso.findAllByTipoDeCurso("Técnico").turmas.semestre[0][0] : null
 		def totalAlunosTecnico = 0
-		for(sem in alunosTecnico) {
-			if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
-				totalAlunosTecnico += sem.quantidadeDeAlunos
+		for(cursosTecnicos in Curso.findAllByTipoDeCursoLike("%Técnico%")) {
+			for(turmas in cursosTecnicos.turmas) {			
+				for(sem in turmas.semestre) {
+					if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
+						totalAlunosTecnico += sem.quantidadeDeAlunos
+					}
+				}
 			}
 		}
-		def porcVCT = (totalAlunosTecnico) ? new BigDecimal((totalAlunos/totalAlunosTecnico)*100, new java.math.MathContext(4)) : 0
+		def porcVCT = (totalAlunosTecnico) ? new BigDecimal((totalAlunosTecnico/totalAlunos)*100, new java.math.MathContext(4)) : 0
 		def turmasListMeta4 = [totalAlunos, totalAlunosTecnico, porcVCT]
 		
 		//Vagas para Licenciaturas
-		def alunosLicenciatura = (Curso.findAllByTipoDeCurso("Licenciatura").turmas.semestre) ? Curso.findAllByTipoDeCurso("Técnico").turmas.semestre[0][0] : null
 		def totalAlunosLicenciatura = 0
-		for(sem in alunosLicenciatura) {
-			if (sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
-				totalAlunosLicenciatura = sem.quantidadeDeAlunos			
+		for(cursosLicenciatura in Curso.findAllByTipoDeCursoLike("%Licenciatura%")) {
+			for(turmas in cursosLicenciatura.turmas) {
+				for(sem in turmas.semestre) {
+					if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
+						totalAlunosLicenciatura += sem.quantidadeDeAlunos
+					}
+				}
 			}		
 		}
-		def porcVCL = (totalAlunosLicenciatura) ? new BigDecimal((totalAlunos/totalAlunosLicenciatura)*100, new java.math.MathContext(4)) : 0
-		def turmasListMeta5 = [totalAlunos, totalAlunosTecnico, porcVCL]
+		def porcVCL = (totalAlunosLicenciatura) ? new BigDecimal((totalAlunosLicenciatura/totalAlunos)*100, new java.math.MathContext(4)) : 0
+		def turmasListMeta5 = [totalAlunos, totalAlunosLicenciatura, porcVCL]
 
-		[turmasMapMeta1:turmasMapMeta1, numPontosQueVaiTer:numPontosQueVaiTer, turmasMapMeta2:turmasMapMeta2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
+		[turmasMapMeta1:turmasMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, turmasMapMeta2:turmasMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
 	}
 }
