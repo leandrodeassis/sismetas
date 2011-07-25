@@ -22,7 +22,7 @@ class AppController {
 	}
 	
 	def authenticate = {
-		def usuario = Usuario.findByEmailAndSenha(params.email, params.senha)
+		def usuario = Usuario.findByEmailAndSenha(params.email, new String(params.senha.encodeAsMD5Hex()))
 		if (usuario) {
 			session.user = usuario
 			redirect(action:"index")
@@ -45,13 +45,13 @@ class AppController {
 			redirect(controller: 'app', action:'index')
 			return
 		}
-		def usuario = Usuario.findByEmailAndSenha(params.email, params.senha)
+		def usuario = Usuario.findByEmailAndSenha(params.email, new String(params.senha.encodeAsMD5Hex()))
             
 		if (params.senhanova1 != params.senhanova2) {
 			flash.message = "Campos de nova senha não são iguais."
 			redirect(controller:"app", action:"trocarsenha")
 		}else if (usuario) {
-			usuario.setSenha(params.senhanova1)
+			usuario.setSenha(new String(params.senhanova1.encodeAsMD5Hex()))
 			if (usuario.save()) { 
 				flash.message = "Senha atualizada com sucesso"
 				usuario.enviaEmailMudancaSenha()
@@ -159,36 +159,42 @@ class AppController {
 				totalAlunosCertific += sem.quantidadeDeAlunos
 			}	 
 		}
-		def forcaDeTrabalho = ((totalAlunos-totalAlunosCertific) + ((totalAlunosCertific*CH.config.chCertific)/400)/((CH.config.profsDE+CH.config.profsT40)+(CH.config.profsT20*0.5)))
+		def forcaDeTrabalho = ((totalAlunos-totalAlunosCertific) + ((totalAlunosCertific*CH.config.chCertific)/400))/((CH.config.profsDE+CH.config.profsT40)+(CH.config.profsT20*0.5))
 		def turmasListMeta3 = [totalAlunos, totalAlunosCertific, CH.config.chCertific, CH.config.profsDE, CH.config.profsT40, CH.config.profsT20,forcaDeTrabalho]
 				
 		//Vagas para os cursos técnicos
-		def totalAlunosTecnico = 0
-		for(cursosTecnicos in Curso.findAllByTipoDeCursoLike("%Técnico%")) {
-			for(turmas in cursosTecnicos.turmas) {			
-				for(sem in turmas.semestre) {
-					if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
-						totalAlunosTecnico += sem.quantidadeDeAlunos
-					}
+		def totalVagas = 0
+		for(cursos in Curso.list()) {
+			for(turmas in cursos.turmas) {
+				if(turmas.ano == CH.config.anoAtual && turmas.periodo == CH.config.periodoAtual) {
+					totalVagas += turmas.vagasEdital
 				}
 			}
 		}
-		def porcVCT = (totalAlunosTecnico) ? new BigDecimal((totalAlunosTecnico/totalAlunos)*100, new java.math.MathContext(4)) : 0
-		def turmasListMeta4 = [totalAlunos, totalAlunosTecnico, porcVCT]
+		
+		def totalVagasTecnico = 0
+		for(cursosTecnicos in Curso.findAllByTipoDeCursoLike("%Técnico%")) {
+			for(turmas in cursosTecnicos.turmas) {			
+				if(turmas.ano == CH.config.anoAtual && turmas.periodo == CH.config.periodoAtual) {
+					totalVagasTecnico += turmas.vagasEdital
+				}			
+			}
+		}
+		
+		def porcVCT = (totalVagasTecnico) ? new BigDecimal((totalVagasTecnico/totalVagas)*100, new java.math.MathContext(4)) : 0
+		def turmasListMeta4 = [totalVagas, totalVagasTecnico, porcVCT]
 		
 		//Vagas para Licenciaturas
-		def totalAlunosLicenciatura = 0
+		def totalVagasLicenciatura = 0
 		for(cursosLicenciatura in Curso.findAllByTipoDeCursoLike("%Licenciatura%")) {
 			for(turmas in cursosLicenciatura.turmas) {
-				for(sem in turmas.semestre) {
-					if(sem.ano == CH.config.anoAtual && sem.periodo == CH.config.periodoAtual) {
-						totalAlunosLicenciatura += sem.quantidadeDeAlunos
-					}
+				if(turmas.ano == CH.config.anoAtual && turmas.periodo == CH.config.periodoAtual) {
+					totalVagasLicenciatura += turmas.vagasEdital
 				}
 			}		
 		}
-		def porcVCL = (totalAlunosLicenciatura) ? new BigDecimal((totalAlunosLicenciatura/totalAlunos)*100, new java.math.MathContext(4)) : 0
-		def turmasListMeta5 = [totalAlunos, totalAlunosLicenciatura, porcVCL]
+		def porcVCL = (totalVagasLicenciatura) ? new BigDecimal((totalVagasLicenciatura/totalVagas)*100, new java.math.MathContext(4)) : 0
+		def turmasListMeta5 = [totalVagas, totalVagasLicenciatura, porcVCL]
 
 		[turmasMapMeta1:turmasMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, turmasMapMeta2:turmasMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
 	}

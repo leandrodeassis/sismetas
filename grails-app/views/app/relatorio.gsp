@@ -79,7 +79,7 @@
 		</g:each>		
         var chart2 = new google.visualization.LineChart(document.getElementById('chart_div2'));
         chart2.draw(data2, {width: 1000, height: 240, title: 'Índice de Eficácia da Instituição',
-                          hAxis: {title: 'Semestres', titleTextStyle: {color: 'red'}}
+                          hAxis: {title: 'Semestres', titleTextStyle: {color: 'black'}}
                          });
       }
 	  

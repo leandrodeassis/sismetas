@@ -14,26 +14,20 @@ class Usuario {
 		email(blank:false, email:true, unique:true)
     }
 	
-	String getSenha() {
-		return senha
-	}
-
-	public setSenha(String novaSenha) {
-		senha = novaSenha
-	}
-	
 	private geraAutoSenha() {
 		Random random = new Random()
-		senha = (1..8).collect { random.nextInt(9) }.join();
+		senhaPlana = (1..8).collect { random.nextInt(9) }.join()
+		senha = new String(senhaPlana.encodeAsMD5Hex())
+		return senhaPlana
 	}
 	
-	public enviaEmailCadastro() {
-		String mensagem = "Olá ${nome},\n\nVocê foi cadastrado no Sistema de Metas do IFPB\n\nAbaixo segue suas informações de login:\nE-mail: ${email}\nSenha: ${senha}\n\nRecomendamos que altere a senha para uma de sua preferência."
+	public enviaEmailCadastro(senhaPlana) {
+		String mensagem = "Olá ${nome},\n\nVocê foi cadastrado no Sistema de Metas do IFPB\n\nAbaixo segue suas informações de login:\nE-mail: ${email}\nSenha: ${senhaPlana}\n\nRecomendamos que altere a senha para uma de sua preferência."
 		senderService.enviaEmail(email, "Bem-Vindo ao Sistema de Metas do IFPB", mensagem)	
 	}
 	
-	public enviaEmailMudancaSenha() {
-		String mensagem = "Olá ${nome},\n\nVocê mudou sua senha no Sistema de Metas do IFPB\n\nAbaixo segue suas informações de login:\nE-mail: ${email}\nSenha: ${senha}"
+	public enviaEmailMudancaSenha(senhaPlana) {
+		String mensagem = "Olá ${nome},\n\nVocê mudou sua senha no Sistema de Metas do IFPB\n\nAbaixo segue suas informações de login:\nE-mail: ${email}\nSenha: ${senhaPlana}"
 		senderService.enviaEmail(email, "Mudança de Senha - Sistema de metas do IFPB", mensagem)	
 	}
 

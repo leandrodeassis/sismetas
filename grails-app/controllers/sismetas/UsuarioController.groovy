@@ -41,10 +41,10 @@ class UsuarioController {
 			return
 		}
         def usuarioInstance = new Usuario(params)
-		usuarioInstance.geraAutoSenha()
+		senhaPlana = usuarioInstance.geraAutoSenha()
         if (usuarioInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'usuario.label', default: 'Usuario'), usuarioInstance.id])}"
-			usuarioInstance.enviaEmailCadastro()
+			usuarioInstance.enviaEmailCadastro(senhaPlana)
             redirect(action: "show", id: usuarioInstance.id)
         }
         else {
