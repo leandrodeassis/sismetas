@@ -14,6 +14,14 @@ class Usuario {
 		email(blank:false, email:true, unique:true)
     }
 	
+	String getSenha() {
+		return senha
+	}
+
+	public setSenha(String novaSenha) {
+		senha = novaSenha
+	}
+	
 	private geraAutoSenha() {
 		Random random = new Random()
 		senhaPlana = (1..8).collect { random.nextInt(9) }.join()
