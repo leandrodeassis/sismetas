@@ -5,41 +5,21 @@ class TurmaController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         redirect(action: "list", params: params)
     }
 
     def list = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [turmaInstanceList: Turma.list(params), turmaInstanceTotal: Turma.count()]
     }
 
     def create = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = new Turma()
         turmaInstance.properties = params
         return [turmaInstance: turmaInstance]
     }
 
     def save = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = new Turma(params)
         if (turmaInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'turma.label', default: 'Turma'), turmaInstance.id])}"
@@ -51,11 +31,6 @@ class TurmaController {
     }
 
     def show = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = Turma.get(params.id)
         if (!turmaInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'turma.label', default: 'Turma'), params.id])}"
@@ -67,11 +42,6 @@ class TurmaController {
     }
 
     def edit = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = Turma.get(params.id)
         if (!turmaInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'turma.label', default: 'Turma'), params.id])}"
@@ -83,11 +53,6 @@ class TurmaController {
     }
 
     def update = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = Turma.get(params.id)
         if (turmaInstance) {
             if (params.version) {
@@ -115,11 +80,6 @@ class TurmaController {
     }
 
     def delete = {
-		if (!session.user) {
-			flash.message = "Permissão Negada"
-			redirect(controller: 'app', action:'index')
-			return
-		}
         def turmaInstance = Turma.get(params.id)
         if (turmaInstance) {
             try {

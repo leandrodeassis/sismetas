@@ -12,7 +12,7 @@ class AppController {
 			return
 		}
 	}
-	def prof = { 
+	def prof = {
 		if (!session.user) {
 			flash.message = "Permissão Negada"
 			redirect(controller: 'app', action:'index')
@@ -54,7 +54,7 @@ class AppController {
 			usuario.setSenha(new String(params.senhanova1.encodeAsMD5Hex()))
 			if (usuario.save()) { 
 				flash.message = "Senha atualizada com sucesso"
-				usuario.enviaEmailMudancaSenha()
+				usuario.enviaEmailMudancaSenha(params.senhanova1)
 				redirect(controller:"app", action:"index")
 			}
 			else { 
@@ -104,6 +104,22 @@ class AppController {
 		}
 		
 		//Indice de eficiencia da instituicao
+		
+		//Por Curso
+		def cursoMapMeta1 = [:]
+		for(curso in Curso.list()) {
+			def totalAlunos = 0
+			def totalVagas = 0
+			for(turma in curso.turmas) {
+				for(semestre in turma.semestre) {
+					totalAlunos += semestre.quantidadeDeAlunos
+					totalVagas += turma.vagasEdital					
+				}				
+			}
+			if (totalAlunos > 0 & totalVagas > 0) { cursoMapMeta1.put("${curso}", new BigDecimal((totalAlunos/totalVagas)*100, new java.math.MathContext(4))) }			
+		}
+				
+		//Por Semestre
 		def turmasMapMeta1 = [:]
 		for(turma in Turma.list()) {
 			for (sem in turma.semestre) {
@@ -126,6 +142,24 @@ class AppController {
 		}
 				
 		//Indice de eficacia da instituicao
+		
+		//Por Curso
+		def cursoMapMeta2 = [:]
+		for(curso in Curso.list()) {
+			def totalAlunos = 0
+			def totalVagas = 0
+			for(turma in curso.turmas) {
+				for(semestre in turma.semestre) {
+					if(semestre.semestreDeConcluintes) {
+						totalAlunos += semestre.quantidadeDeAlunos
+						totalVagas += turma.vagasEdital
+					}
+				}				
+			}
+			if (totalAlunos > 0 & totalVagas > 0) { cursoMapMeta2.put("${curso}", new BigDecimal((totalAlunos/totalVagas)*100, new java.math.MathContext(4))) }
+		}
+
+		//Por Semestre
 		def turmasMapMeta2 = [:]
 		for(turma in Turma.list()) {
 			for(sem in turma.semestre) {
@@ -196,6 +230,6 @@ class AppController {
 		def porcVCL = (totalVagasLicenciatura) ? new BigDecimal((totalVagasLicenciatura/totalVagas)*100, new java.math.MathContext(4)) : 0
 		def turmasListMeta5 = [totalVagas, totalVagasLicenciatura, porcVCL]
 
-		[turmasMapMeta1:turmasMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, turmasMapMeta2:turmasMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
+		[cursoMapMeta1:cursoMapMeta1, turmasMapMeta1:turmasMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, cursoMapMeta2:cursoMapMeta2, turmasMapMeta2:turmasMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
 	}
 }

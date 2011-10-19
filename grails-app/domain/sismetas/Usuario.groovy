@@ -24,7 +24,7 @@ class Usuario {
 	
 	private geraAutoSenha() {
 		Random random = new Random()
-		senhaPlana = (1..8).collect { random.nextInt(9) }.join()
+		def senhaPlana = (1..8).collect { random.nextInt(9) }.join()
 		senha = new String(senhaPlana.encodeAsMD5Hex())
 		return senhaPlana
 	}

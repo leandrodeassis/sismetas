@@ -22,17 +22,11 @@
                 <table>
                     <tbody>
                     
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="semestre.id.label" default="Id" /></td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean: semestreInstance, field: "id")}</td>
-                            
-                        </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="semestre.ano.label" default="Ano" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: semestreInstance, field: "ano")}</td>
+                            <td valign="top" class="value"><g:formatNumber number="${semestreInstance.ano}" format="#" /></td>
                             
                         </tr>
                     

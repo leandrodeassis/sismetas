@@ -30,6 +30,20 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="turma.turno.label" default="Turno" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "turno")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
+                            <td valign="top" class="name"><g:message code="turma.codigoTurma.label" default="Codigo Turma" /></td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "codigoTurma")}</td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="turma.ano.label" default="Ano" /></td>
                             
                             <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "ano")}</td>

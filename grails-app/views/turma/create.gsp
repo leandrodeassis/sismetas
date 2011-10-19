@@ -30,6 +30,24 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
+                                    <label for="turno"><g:message code="turma.turno.label" default="Turno" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'turno', 'errors')}">
+                                    <g:select name="turno" from="${turmaInstance.constraints.turno.inList}" value="${turmaInstance?.turno}" valueMessagePrefix="turma.turno"  />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="codigoTurma"><g:message code="turma.codigoTurma.label" default="Codigo Turma" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'codigoTurma', 'errors')}">
+                                    <g:select name="codigoTurma" from="${turmaInstance.constraints.codigoTurma.inList}" value="${turmaInstance?.codigoTurma}" valueMessagePrefix="turma.codigoTurma"  />
+                                </td>
+                            </tr>
+                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
                                     <label for="ano"><g:message code="turma.ano.label" default="Ano" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: turmaInstance, field: 'ano', 'errors')}">

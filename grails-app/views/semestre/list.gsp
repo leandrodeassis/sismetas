@@ -42,7 +42,7 @@
                         
                             <td><g:link action="show" id="${semestreInstance.id}">${fieldValue(bean: semestreInstance, field: "id")}</g:link></td>
                         
-                            <td>${fieldValue(bean: semestreInstance, field: "ano")}</td>
+							<td> <g:formatNumber number="${semestreInstance.ano}" format="#" /> </td>
                         
                             <td>${fieldValue(bean: semestreInstance, field: "periodo")}</td>
                         

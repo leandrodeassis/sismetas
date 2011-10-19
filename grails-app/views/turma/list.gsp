@@ -24,13 +24,15 @@
                         
                             <g:sortableColumn property="id" title="${message(code: 'turma.id.label', default: 'Id')}" />
                         
+                            <g:sortableColumn property="turno" title="${message(code: 'turma.turno.label', default: 'Turno')}" />
+                        
+                            <g:sortableColumn property="codigoTurma" title="${message(code: 'turma.codigoTurma.label', default: 'Codigo Turma')}" />
+                        
                             <g:sortableColumn property="ano" title="${message(code: 'turma.ano.label', default: 'Ano')}" />
                         
                             <g:sortableColumn property="periodo" title="${message(code: 'turma.periodo.label', default: 'Periodo')}" />
                         
                             <g:sortableColumn property="vagasEdital" title="${message(code: 'turma.vagasEdital.label', default: 'Vagas Edital')}" />
-                        
-                            <th><g:message code="turma.curso.label" default="Curso" /></th>
                         
                         </tr>
                     </thead>
@@ -40,13 +42,15 @@
                         
                             <td><g:link action="show" id="${turmaInstance.id}">${fieldValue(bean: turmaInstance, field: "id")}</g:link></td>
                         
+                            <td>${fieldValue(bean: turmaInstance, field: "turno")}</td>
+                        
+                            <td>${fieldValue(bean: turmaInstance, field: "codigoTurma")}</td>
+                        
                             <td>${fieldValue(bean: turmaInstance, field: "ano")}</td>
                         
                             <td>${fieldValue(bean: turmaInstance, field: "periodo")}</td>
                         
                             <td>${fieldValue(bean: turmaInstance, field: "vagasEdital")}</td>
-                        
-                            <td>${fieldValue(bean: turmaInstance, field: "curso")}</td>
                         
                         </tr>
                     </g:each>
