@@ -259,7 +259,7 @@ class AppController {
 		
 		def totalVagasTecnico = 0
 		for(cursosTecnicos in Curso.findAllByTipoDeCursoLike("%Técnico%")) {
-			for(turmas in cursosTecnicos.turmas) {			
+			for(turmas in cursosTecnicos.turmas) {
 				if(turmas.ano == CH.config.anoAtual && turmas.periodo == CH.config.periodoAtual) {
 					totalVagasTecnico += turmas.vagasEdital
 				}			
@@ -281,6 +281,6 @@ class AppController {
 		def porcVCL = (totalVagasLicenciatura) ? new BigDecimal((totalVagasLicenciatura/totalVagas)*100, new java.math.MathContext(4)) : 0
 		def turmasListMeta5 = [totalVagas, totalVagasLicenciatura, porcVCL]
 
-		[turmaMapMeta1: turmaMapMeta1, cursoMapMeta1:cursoMapMeta1, semestreMapMeta1:semestreMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, turmaMapMeta2: turmaMapMeta2, cursoMapMeta2:cursoMapMeta2, semestreMapMeta2:semestreMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
+		[turmaMapMeta1: turmaMapMeta1, cursoMapMeta1:cursoMapMeta1, semestreMapMeta1:semestreMapMeta1, numPontosQueVaiTer1:numPontosQueVaiTer1, instituicaoMeta1:instituicaoMeta1, turmaMapMeta2:turmaMapMeta2, cursoMapMeta2:cursoMapMeta2, semestreMapMeta2:semestreMapMeta2, numPontosQueVaiTer2:numPontosQueVaiTer2, instituicaoMeta2:instituicaoMeta2, turmasListMeta3:turmasListMeta3, turmasListMeta4:turmasListMeta4, turmasListMeta5: turmasListMeta5]
 	}
 }

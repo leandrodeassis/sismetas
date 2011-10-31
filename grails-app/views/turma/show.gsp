@@ -46,7 +46,7 @@
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="turma.ano.label" default="Ano" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: turmaInstance, field: "ano")}</td>
+                            <td valign="top" class="value"><g:formatNumber number="${turmaInstance.ano}" format="#" /></td>
                             
                         </tr>
                     
@@ -79,6 +79,8 @@
                                 <g:each in="${turmaInstance.semestre}" var="s">
                                     <li><g:link controller="semestre" action="show" id="${s.id}">${s?.encodeAsHTML()}</g:link></li>
                                 </g:each>
+								<br>
+								<li><g:link controller="semestre" action="create" params="['turma.id': turmaInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'semestre.label', default: 'Semestre')])}</g:link>
                                 </ul>
                             </td>
                             

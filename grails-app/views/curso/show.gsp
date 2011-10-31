@@ -51,6 +51,8 @@
                                 <g:each in="${cursoInstance.turmas}" var="t">
                                     <li><g:link controller="turma" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
                                 </g:each>
+								<br>
+								<li><g:link controller="turma" action="create" params="['curso.id': cursoInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'turma.label', default: 'Turma')])}</g:link>
                                 </ul>
                             </td>
                             

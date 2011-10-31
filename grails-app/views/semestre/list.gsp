@@ -6,6 +6,12 @@
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'semestre.label', default: 'Semestre')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
+		<g:javascript>
+			function exibe(id) {
+				link = "/sismetas/semestre/show/" + id;
+				window.open(link, "_self");
+			}
+		</g:javascript>
     </head>
     <body>
         <div class="nav">
@@ -21,9 +27,7 @@
                 <table>
                     <thead>
                         <tr>
-                        
-                            <g:sortableColumn property="id" title="${message(code: 'semestre.id.label', default: 'Id')}" />
-                        
+                            
                             <g:sortableColumn property="ano" title="${message(code: 'semestre.ano.label', default: 'Ano')}" />
                         
                             <g:sortableColumn property="periodo" title="${message(code: 'semestre.periodo.label', default: 'Periodo')}" />
@@ -38,10 +42,8 @@
                     </thead>
                     <tbody>
                     <g:each in="${semestreInstanceList}" status="i" var="semestreInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            <td><g:link action="show" id="${semestreInstance.id}">${fieldValue(bean: semestreInstance, field: "id")}</g:link></td>
-                        
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}" onMouseDown="exibe('${semestreInstance.id}');">
+                            
 							<td> <g:formatNumber number="${semestreInstance.ano}" format="#" /> </td>
                         
                             <td>${fieldValue(bean: semestreInstance, field: "periodo")}</td>
