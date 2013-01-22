@@ -46,6 +46,15 @@
                                 </td>
                             </tr>
                         
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="campus"><g:message code="curso.campus.label" default="Campus" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: cursoInstance, field: 'campus', 'errors')}">
+                                    <g:select name="campus.id" from="${sismetas.Campus.list()}" optionKey="id" value="${cursoInstance?.campus?.id}"  />
+                                </td>
+                            </tr>
+                        
                         </tbody>
                     </table>
                 </div>

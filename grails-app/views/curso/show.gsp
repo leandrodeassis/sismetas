@@ -44,6 +44,13 @@
                         </tr>
                     
                         <tr class="prop">
+                            <td valign="top" class="name"><g:message code="curso.campus.label" default="Campus" /></td>
+                            
+                            <td valign="top" class="value"><g:link controller="campus" action="show" id="${cursoInstance?.campus?.id}">${cursoInstance?.campus?.encodeAsHTML()}</g:link></td>
+                            
+                        </tr>
+                    
+                        <tr class="prop">
                             <td valign="top" class="name"><g:message code="curso.turmas.label" default="Turmas" /></td>
                             
                             <td valign="top" style="text-align: left;" class="value">
@@ -51,8 +58,6 @@
                                 <g:each in="${cursoInstance.turmas}" var="t">
                                     <li><g:link controller="turma" action="show" id="${t.id}">${t?.encodeAsHTML()}</g:link></li>
                                 </g:each>
-								<br>
-								<li><g:link controller="turma" action="create" params="['curso.id': cursoInstance?.id]">${message(code: 'default.add.label', args: [message(code: 'turma.label', default: 'Turma')])}</g:link>
                                 </ul>
                             </td>
                             

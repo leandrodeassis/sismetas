@@ -17,6 +17,7 @@
             <g:form>                
                     <td text-align="right"><b>Bem-vindo, ${session.user}.</b>
 					<span class="menuButton"><g:link controller="usuario" class="list" action="list" style="font-size:12px"><g:message code="Usuários" args="[entityName]" /></g:link></span>
+					<span class="menuButton"><g:link controller="campus" class="list" action="list" style="font-size:12px"><g:message code="Campi" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="curso" class="list" action="list" style="font-size:12px"><g:message code="Cursos" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="turma" class="list" action="list" style="font-size:12px"><g:message code="Turmas" args="[entityName]" /></g:link></span>
 					<span class="menuButton"><g:link controller="semestre" class="list" action="list" style="font-size:12px"><g:message code="Semestres" args="[entityName]" /></g:link></span>					
